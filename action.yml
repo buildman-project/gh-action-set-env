@@ -1,0 +1,11 @@
+name: replace in file
+description: replaces word in file
+
+# inputs:
+#   VariableList:
+#     required: true
+#     description: string of aws parameters like in a .env file format
+
+runs:
+  using: node16
+  main: dist/index.js
