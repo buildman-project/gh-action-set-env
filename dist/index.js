@@ -2818,41 +2818,18 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 const core = __nccwpck_require__(186);
-let fs = __nccwpck_require__(147);
+// const params = core.getInput("VariableList");
 
-const file = core.getInput("FileName");
-const params = core.getInput("ParamsEnv");
+// const variables = params
+//   .split(",")
+//   .map((str) => str.trim())
+//   .filter((str) => str != "");
 
-const main = () => {
-  const paramsContent = generateParametersArray(params);
-  writeFile(file, paramsContent);
-};
+const variables = Object.keys(process.env);
 
-const generateParametersArray = (paramsStr) => {
-  const paramLines = paramsStr.split(/\r?\n/);
-  const paramsObject = paramLines
-    .filter((line) => line.includes("="))
-    .map((line) => {
-      let [name, value] = line
-        .split("=")
-        .map((s) => s.trim().replace(/^"|"$/g, "").replace(/^'|'$/g, ""));
-      const pair = {
-        ParameterKey: name,
-        ParameterValue: value,
-      };
-      return pair;
-    }, []);
-  return JSON.stringify(paramsObject);
-};
-
-const writeFile = (filename, strContent) => {
-  fs.writeFile(filename, strContent, function (err) {
-    if (err) throw err;
-    console.log("File created successfully");
-  });
-};
-
-main();
+for (const variable of variables) {
+  core.setOutput(variable, process.env[variable]);
+}
 
 })();
 
